@@ -1,20 +1,36 @@
 {
   "name": "libsql-migrate",
   "version": "0.1.0",
-  "description": "",
-  "exports": "./src/index.js",
+  "private": true,
+  "description": "Database migration and seed management for libsql with configurable options.",
   "bin": {
     "libsql-migrate": "./src/cli/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier . --write",
     "lint:eslint": "eslint **/*[.cjs,.js]",
     "lint:prettier": "prettier . --check",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
-    "format": "prettier . --write"
+    "lint": "npm run lint:eslint && npm run lint:prettier"
   },
-  "keywords": [],
+  "keywords": [
+    "libsql",
+    "migration",
+    "migrate",
+    "seed",
+    "configuration",
+    "deployment",
+    "initialization"
+  ],
   "author": "Travis Horn <travis@travishorn.com> (https://travishorn.com/)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/travishorn/libsql-migrate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/travishorn/libsql-migrate/issues"
+  },
+  "homepage": "https://github.com/travishorn/libsql-migrate#readme",
   "license": "MIT",
   "type": "module",
   "engines": {
