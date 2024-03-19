@@ -7,9 +7,9 @@
     "libsql-migrate": "./src/cli/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "format": "prettier . --write",
-    "lint:eslint": "eslint **/*[.cjs,.js]",
+    "lint:eslint": "eslint **/*[.cjs,.js] --ignore-path=.gitignore",
     "lint:prettier": "prettier . --check",
     "lint": "npm run lint:eslint && npm run lint:prettier"
   },
@@ -37,9 +37,11 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^1.4.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
-    "prettier": "3.2.5"
+    "prettier": "3.2.5",
+    "vitest": "^1.4.0"
   },
   "dependencies": {
     "@libsql/client": "^0.5.6",

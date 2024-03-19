@@ -40,16 +40,12 @@ export async function down(client) {
  * await make("example");
  */
 export default async function make(name) {
-  try {
-    const config = await getConfig();
-    const directory = join(process.cwd(), config.migrations.directory);
-    const filename = `${timestamp()}_${name}.js`;
-    await mkdirp(directory);
-    await writeFile(join(directory, filename), migrationTemplate, "utf-8");
-    logger.info(
-      `New migration created at ${config.migrations.directory}/${filename}.`,
-    );
-  } catch (error) {
-    logger.error(error);
-  }
+  const config = await getConfig();
+  const directory = join(process.cwd(), config.migrations.directory);
+  const filename = `${timestamp()}_${name}.js`;
+  await mkdirp(directory);
+  await writeFile(join(directory, filename), migrationTemplate, "utf-8");
+  logger.info(
+    `New migration created at ${config.migrations.directory}/${filename}.`,
+  );
 }
