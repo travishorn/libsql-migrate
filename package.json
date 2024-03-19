@@ -4,7 +4,11 @@
   "description": "",
   "exports": "./src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:eslint": "eslint **/*[.cjs,.js]",
+    "lint:prettier": "prettier . --check",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "format": "prettier . --write"
   },
   "keywords": [],
   "author": "Travis Horn <travis@travishorn.com> (https://travishorn.com/)",
@@ -15,6 +19,7 @@
   },
   "devDependencies": {
     "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "prettier": "3.2.5"
   }
 }
