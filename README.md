@@ -150,10 +150,39 @@ export async function down(client) {
 }
 ```
 
+## Run the next migration
+
+Run the next migration that has not yet been run.
+
+```sh
+libsql-migrate up
+```
+
+The `up()` function in the next migration file (alphabetically) in the migration
+directory will be executed.
+
+A "latest" command is planned. But until then, you can repeatedly run this
+command to bring the database schema full up-to-date.
+
+## Roll back the latest migration
+
+Roll back the latest migration that was run.
+
+```sh
+libsql-migrate down
+```
+
+The `down()` function in the most recently executed migration file will be
+executed.
+
+You can repeadetly run this command go roll back the database schema further and
+further.
+
 ## To do
 
 - Unit tests
-- `down` command
+- `latest` command
+- down `batch` option
 - `seed:make` command
 - `seed:run` command
 

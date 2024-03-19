@@ -1,5 +1,4 @@
-import { writeFileIfNotExists } from "../lib.js";
-import logger from "../logger.js";
+import { writeFileIfNotExists, logger } from "../lib/index.js";
 
 /**
  * The contents of a template libsqlrc.js configuration file.

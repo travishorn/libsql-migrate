@@ -1,8 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import { mkdirp } from "mkdirp";
 import { join } from "node:path";
-import { timestamp, getConfig } from "../lib.js";
-import logger from "../logger.js";
+import { getConfig, logger, timestamp } from "../lib/index.js";
 
 /**
  * The contents of a template migration file.
