@@ -1,8 +1,11 @@
 {
-  "name": "turso-migrate",
+  "name": "libsql-migrate",
   "version": "0.1.0",
   "description": "",
   "exports": "./src/index.js",
+  "bin": {
+    "libsql-migrate": "./src/cli/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:eslint": "eslint **/*[.cjs,.js]",
@@ -21,5 +24,8 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "3.2.5"
+  },
+  "dependencies": {
+    "commander": "^12.0.0"
   }
 }
