@@ -18,17 +18,30 @@ export default async function up() {
   try {
     const config = await getConfig();
     const directory = join(process.cwd(), config.migrations.directory);
-    const migrationFiles = (await readdir(directory))
-      .filter((file) => file.endsWith(".js"))
-      .sort()
-      .map((file) => {
-        const { name } = parse(file);
+    let migrationFiles = [];
 
-        return {
-          name,
-          path: join(directory, file),
-        };
-      });
+    try {
+      migrationFiles = (await readdir(directory))
+        .filter((file) => file.endsWith(".js"))
+        .sort()
+        .map((file) => {
+          const { name } = parse(file);
+
+          return {
+            name,
+            path: join(directory, file),
+          };
+        });
+    } catch (error) {
+      if (error.code === "ENOENT") {
+        logger.warn(
+          `Migrations directory ${config.migrations.directory} does not exist. No migrations to run.`,
+        );
+        return;
+      } else {
+        return error;
+      }
+    }
 
     if (migrationFiles.length > 0) {
       let migrationFile = migrationFiles[0];
@@ -86,6 +99,10 @@ export default async function up() {
       });
 
       logger.info(`Ran 1 migration: ${migrationFile.name}.`);
+    } else {
+      logger.warn(
+        `No migration files found in ${config.migrations.directory}. No migrations to run.`,
+      );
     }
   } catch (error) {
     logger.error(error);
