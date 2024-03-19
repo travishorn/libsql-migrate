@@ -1,10 +1,11 @@
-import { writeFile } from "node:fs/promises";
+import { writeFileIfNotExists } from "../lib.js";
+import logger from "../logger.js";
 
 /**
- * The contents of a default libsqlrc.js configuration file.
+ * The contents of a template libsqlrc.js configuration file.
  * @type {string}
  */
-const defaultConfig = `/**
+const configTemplate = `/**
 * Configuration object for libsql-migrate.
 * @typedef {Object} LibsqlMigrateConfig
 * @property {Object} [development] - Configuration for development environment.
@@ -37,13 +38,22 @@ export default {
 
 /**
  * Creates a fresh libsqlrc.js configuration file.
+ *
  * @async
  * @function init
  * @returns {Promise<void>} A promise that resolves when the file is written.
  * @example
- * // Creates a file called `libsqlrc.js` with the default configuration in the project root
+ * // Creates a file called `libsqlrc.js` with the default configuration in the
+ * // project root.
  * await init();
  */
 export default async function init() {
-  await writeFile("libsqlrc.js", defaultConfig, "utf-8");
+  const filePath = "libsqlrc.js";
+
+  try {
+    await writeFileIfNotExists(filePath, configTemplate, "utf-8");
+    logger.info(`Template configuration file written to ${filePath}.`);
+  } catch (error) {
+    logger.error(error);
+  }
 }

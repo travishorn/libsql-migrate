@@ -153,7 +153,6 @@ export async function down(client) {
 ## To do
 
 - Unit tests
-- `up` command
 - `down` command
 - `seed:make` command
 - `seed:run` command

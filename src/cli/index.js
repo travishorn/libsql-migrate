@@ -3,6 +3,7 @@
 import { program } from "commander";
 import init from "./init.js";
 import make from "./make.js";
+import up from "./up.js";
 
 program
   .command("init")
@@ -13,5 +14,10 @@ program
   .command("make <name>")
   .description("Create a named migration file.")
   .action(make);
+
+program
+  .command("up")
+  .description("Run the next migration that has not yet been run.")
+  .action(up);
 
 program.parse();
