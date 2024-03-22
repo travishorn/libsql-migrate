@@ -222,7 +222,7 @@ export async function seed(client) {
 }
 ```
 
-## Run seeds
+## Run all seeds
 
 Run all seed files to fill the database with preset data.
 
@@ -233,10 +233,25 @@ libsql-migrate seed:run
 This will execute the `seed()` function inside all seed files in the seeds
 directory. Files are executed in alphabetical order.
 
-## To do
+## Run specified seed(s)
 
-- Unit tests
-- Command to run a named seed
+Include the name of a seed file to run it.
+
+```sh
+libsql-migrate seed:run animals
+```
+
+This will execute the `seed()` function inside the `animals.js` file in the
+seeds directory.
+
+Include multiple names to run multiple seeds.
+
+```sh
+libsql-migrate seed:run animals cars
+```
+
+This will run both the `animals.js` and the `cars.js` seed files. Seeds are run
+in alphabetical order no matter which order they are provided to the CLI.
 
 ## Contributing
 

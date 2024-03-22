@@ -40,7 +40,10 @@ program
   .description("Create a named seed file.")
   .action(seedMake);
 
-program.command("seed:run").description("Run all seeds.").action(seedRun);
+program
+  .command("seed:run [names...]")
+  .description("Run all seeds.")
+  .action(seedRun);
 
 program
   .command("up")
