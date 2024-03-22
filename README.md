@@ -178,11 +178,65 @@ executed in series. This is useful to roll back all changes from a
 
 You can repeatedly run this command to roll back subsequent batches.
 
+## Make a new seed file
+
+```sh
+libsql-migrate seed:make demo
+```
+
+Replace `demo` with whatever name you'd like to give the seed.
+
+A file with the name you chose will be written to the seeds directory. This
+directory is `./seeds` by default, but can be configured in `libsqlrc.js` like
+so:
+
+```javascript
+export default {
+  development: {
+    connection: {
+      url: "file:local.db",
+    },
+    seeds: {
+      directory: "my_seeds_directory",
+    },
+  },
+  // ...
+};
+```
+
+Seed files look like this:
+
+```javascript
+export async function seed(client) {}
+```
+
+Write the code that seeds your database with preset data in the `seed()`
+function. Note that you'll probably want to delete old data before seeding.
+
+For example:
+
+```javascript
+export async function seed(client) {
+  await client.execute("DELETE FROM users;");
+  await client.execute("INSERT INTO users (name) VALUES ('admin')");
+}
+```
+
+## Run seeds
+
+Run all seed files to fill the database with preset data.
+
+```sh
+libsql-migrate seed:run
+```
+
+This will execute the `seed()` function inside all seed files in the seeds
+directory. Files are executed in alphabetical order.
+
 ## To do
 
 - Unit tests
-- `seed:make` command
-- `seed:run` command
+- Command to run a named seed
 
 ## Contributing
 

@@ -6,6 +6,8 @@ import init from "./init.js";
 import latest from "./latest.js";
 import make from "./make.js";
 import rollback from "./rollback.js";
+import seedMake from "./seedMake.js";
+import seedRun from "./seedRun.js";
 import up from "./up.js";
 
 program
@@ -32,6 +34,13 @@ program
   .command("rollback")
   .description("Roll back all migrations in the latest batch that was run.")
   .action(rollback);
+
+program
+  .command("seed:make <name>")
+  .description("Create a named seed file.")
+  .action(seedMake);
+
+program.command("seed:run").description("Run all seeds.").action(seedRun);
 
 program
   .command("up")

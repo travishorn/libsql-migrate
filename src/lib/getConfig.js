@@ -3,6 +3,7 @@ import { merge } from "lodash-es";
 
 const defaultConfig = {
   migrations: { directory: "./migrations" },
+  seeds: { directory: "./seeds" },
 };
 
 /**
