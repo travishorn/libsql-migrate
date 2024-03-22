@@ -2,8 +2,6 @@
 
 Database migration and seed management for libsql with configurable options.
 
-**Warning:** This tool is in early development and the API will likely change.
-
 ## Installation
 
 The easiest method is a global installation.
