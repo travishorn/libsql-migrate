@@ -180,7 +180,7 @@ further.
 
 ## To do
 
-- Increase unit test coverage
+- Unit tests
 - `latest` command
 - down `batch` option
 - `seed:make` command
