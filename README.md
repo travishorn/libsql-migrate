@@ -52,7 +52,7 @@ libsql-migrate init
 ```
 
 3. This writes a file called `libsqlrc.js` with the following contents. Modify it
-to meet your project's configuration.
+   to meet your project's configuration.
 
 ```javascript
 export default {
@@ -107,7 +107,7 @@ export async function down(client) {}
 ```
 
 2. Write the code that brings your schema **up** toward the latest version in the
-`up()` function. For example:
+   `up()` function. For example:
 
 ```javascript
 export async function up(client) {
@@ -215,7 +215,7 @@ export async function seed(client) {}
 ```
 
 2. Write the code that seeds your database with preset data in the `seed()`
-function. Note that you'll probably want to delete old data before seeding.
+   function. Note that you'll probably want to delete old data before seeding.
 
 For example:
 

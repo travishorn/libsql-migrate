@@ -9,6 +9,9 @@ import rollback from "./rollback.js";
 import seedMake from "./seedMake.js";
 import seedRun from "./seedRun.js";
 import up from "./up.js";
+import { getVersion } from "../lib/index.js";
+
+program.version(getVersion());
 
 program
   .command("down")
