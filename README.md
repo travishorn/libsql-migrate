@@ -2,13 +2,12 @@
 
 Database migration and seed management for libsql with configurable options.
 
-**Warning:** This tool is in early development and most features are not yet
-implemented.
+**Warning:** This tool is in early development and the API will likely change.
 
 ## Installation
 
 This project will be distributed via npm when it reaches some level of
-stability. Until then, installation takes a more manual approach.
+stability. Until then, you can install it via git.
 
 1. Clone this repository.
 
@@ -54,22 +53,6 @@ This writes a file called `libsqlrc.js` with the following contents. Modify it
 to meet your project's configuration.
 
 ```javascript
-/**
- * Configuration object for libsql-migrate.
- * @typedef {Object} LibsqlMigrateConfig
- * @property {Object} development - Configuration for development environment.
- * @property {Object} development.connection - Connection configuration for development environment.
- * @property {string} development.connection.url - URL for development environment connection.
- * @property {Object} [production] - Configuration for production environment (optional).
- * @property {Object} [production.connection] - Connection configuration for production environment.
- * @property {string} [production.connection.url] - URL for production environment connection.
- * @property {string} [production.connection.authToken] - Authentication token for production environment connection.
- */
-
-/**
- * Configuration object for libsql-migrate.
- * @type {LibsqlMigrateConfig}
- */
 export default {
   development: {
     connection: {
@@ -95,7 +78,7 @@ libsql-migrate make demo
 
 Replace `demo` with whatever name you'd like to give the migration.
 
-A file with the timestamp and the name you chose will be written to the
+A file with the current timestamp and the name you chose will be written to the
 migrations directory. This directory is `./migrations` by default, but can be
 configured in `libsqlrc.js` like so:
 
@@ -113,26 +96,16 @@ export default {
 };
 ```
 
-The newly written migration file's contents look like this:
+Migrations files look like this:
 
 ```javascript
-/**
- * Migrates the database schema upward, making changes to bring the schema toward the latest version.
- * @param client - The libsql client to use when migrating.
- * @returns { Promise<void> }
- */
 export async function up(client) {}
 
-/**
- * Migrates the database schema downward, making changes to roll the schema back to a previous version.
- * @param client - The libsql client to use when migrating.
- * @returns { Promise<void> }
- */
 export async function down(client) {}
 ```
 
-Write the code that brings your schema toward the latest version in the `up()`
-function. For example:
+Write the code that brings your schema **up** toward the latest version in the
+`up()` function. For example:
 
 ```javascript
 export async function up(client) {
@@ -142,7 +115,7 @@ export async function up(client) {
 }
 ```
 
-Write the code that rolls your schema backward in the `down()` function:
+Write the code that reverts your schema **down** in the `down()` function:
 
 ```javascript
 export async function down(client) {
@@ -161,8 +134,9 @@ libsql-migrate up
 The `up()` function in the next migration file (alphabetically) in the migration
 directory will be executed.
 
-A "latest" command is planned. But until then, you can repeatedly run this
-command to bring the database schema full up-to-date.
+You can repeatedly run this command to keep migrating up. If you want to run all
+pending migrations to bring the database schema fully up-to-date, use the
+[`latest`](#latest) command.
 
 ## Roll back the latest migration
 
@@ -175,13 +149,38 @@ libsql-migrate down
 The `down()` function in the most recently executed migration file will be
 executed.
 
-You can repeadetly run this command go roll back the database schema further and
-further.
+You can repeatedly run this command to roll back the database schema further and
+further back.
+
+## Run all pending migrations
+
+Run all migrations that have not yet been run.
+
+```sh
+libsql-migrate latest
+```
+
+The `up()` function for all pending migration files will be executed in series.
+All migrations that were run during this command are considered part of the same
+"batch".
+
+## Roll back the latest batch
+
+Roll back all migrations that were run during the last batch.
+
+```sh
+libsql-migrate rollback
+```
+
+The `down()` function for all migrations that were run in the last batch will be
+executed in series. This is useful to roll back all changes from a
+`libsql-migrate latest` command.
+
+You can repeatedly run this command to roll back subsequent batches.
 
 ## To do
 
 - Unit tests
-- down `batch` option
 - `seed:make` command
 - `seed:run` command
 

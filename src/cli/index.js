@@ -5,6 +5,7 @@ import down from "./down.js";
 import init from "./init.js";
 import latest from "./latest.js";
 import make from "./make.js";
+import rollback from "./rollback.js";
 import up from "./up.js";
 
 program
@@ -26,6 +27,11 @@ program
   .command("make <name>")
   .description("Create a named migration file.")
   .action(make);
+
+program
+  .command("rollback")
+  .description("Roll back all migrations in the latest batch that was run.")
+  .action(rollback);
 
 program
   .command("up")

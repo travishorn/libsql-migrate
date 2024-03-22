@@ -6,18 +6,20 @@ import { getConfig, getMigrations, logger } from "../lib/index.js";
  * migration directory against the latest database record.
  *
  * @async
- * @function up
+ * @function latest
  * @returns {Promise<void>} A promise that resolves when the pending migrations are completed.
  * @example
  * await latest();
  */
-export default async function up() {
+export default async function latest() {
   const migrations = await getMigrations();
   const config = await getConfig();
   const client = createClient(config.connection);
 
   if (migrations.pending) {
-    const batch = migrations.latest ? migrations.latest.batch + 1 : 1;
+    const batch = migrations.completed
+      ? migrations.completed[migrations.completed.length - 1].batch + 1
+      : 1;
 
     for (const migration of migrations.pending) {
       await migration.up(client);
