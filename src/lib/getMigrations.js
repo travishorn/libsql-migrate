@@ -4,11 +4,23 @@ import { createClient } from "@libsql/client";
 import { getConfig, logger } from "./index.js";
 
 /**
- * Retrieves information about the latest and next migrations.
+ * Represents a database migration.
  *
- * @async
- * @function getMigrations
- * @returns {Promise<{latest: Object|null, next: Object|null}>} An object containing information about the latest and next migrations.
+ * @typedef {Object} Migration
+ * @property {string} name - The name of the migration (from the filename)
+ * @property {string} path - The path to the migration file.
+ * @property {Function} up - The function to execute when migrating up.
+ * @property {Function} down - The function to execute when migrating down.
+ * @property {number} [batch] - The batch number in which the migration was completed.
+ * @property {Date} [migratedAt] - The timestamp of when the migration was completed.
+ */
+
+/**
+ * Retrieves pending and completed migrations.
+ *
+ * @returns {Promise<{pending: Migration[], completed: Migration[]}>} An object containing arrays of pending and completed migrations.
+ * @example
+ * const migrations = await getMigrations();
  */
 export default async function getMigrations() {
   const config = await getConfig();
@@ -16,27 +28,7 @@ export default async function getMigrations() {
   const directory = join(process.cwd(), config.migrations.directory);
   let files = [];
 
-  await client.execute(`
-    CREATE TABLE IF NOT EXISTS libsql_migrate (
-      id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      batch INTEGER NOT NULL,
-      migrated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-    );
-  `);
-
-  const latestRecord = (
-    await client.execute(`
-    SELECT    id,
-              name,
-              batch,
-              migrated_at AS migratedAt
-    FROM      libsql_migrate
-    ORDER BY  migrated_at DESC
-    LIMIT     1;",
-  `)
-  ).rows[0];
-
+  // Try to read migration files from directory
   try {
     files = (await readdir(directory))
       .filter((file) => file.endsWith(".js"))
@@ -65,49 +57,66 @@ export default async function getMigrations() {
     return;
   }
 
-  let latestFile;
-  let latest;
-  let latestFileIndex;
-  let nextFile = null;
-  let next = null;
+  // Add the up and down functions to each object
+  const migrations = await Promise.all(
+    files.map(async (file) => {
+      const migration = await import(join("file:///", file.path));
 
-  if (latestRecord) {
-    latestFile = files.find((file) => file.name === latestRecord.name);
-    latest = await import(join("file:///", latestFile.path));
-    latestFileIndex = files.findIndex(
-      (file) => file.name === latestRecord.name,
+      return {
+        ...file,
+        up: migration.up,
+        down: migration.down,
+      };
+    }),
+  );
+
+  // Get migration records
+  await client.execute(`
+    CREATE TABLE IF NOT EXISTS libsql_migrate (
+      name TEXT NOT NULL,
+      batch INTEGER NOT NULL,
+      migrated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
+  `);
 
-    if (files.length > latestFileIndex + 1) {
-      nextFile = files[latestFileIndex + 1];
-    }
-  } else {
-    nextFile = files[0];
-  }
+  const records = (
+    await client.execute(`
+    SELECT    name,
+              batch,
+              migrated_at AS migratedAt
+    FROM      libsql_migrate
+    ORDER BY  migrated_at;",
+  `)
+  ).rows;
 
-  if (nextFile) {
-    next = await import(join("file:///", nextFile.path));
+  // Where is the latest migration in the array?
+  const latestRecord = records.length ? records[records.length - 1] : null;
+  const latestIndex = migrations.findIndex(
+    (migration) => migration.name === latestRecord?.name,
+  );
+
+  // Split the migrations into pending and completed
+  const pending =
+    latestIndex + 1 < migrations.length
+      ? migrations.slice(latestIndex + 1)
+      : null;
+  let completed =
+    latestIndex > -1 ? migrations.slice(0, latestIndex + 1) : null;
+
+  // Enhance completed migrations with info from the database
+  if (records.length) {
+    completed = completed.map((migration) => {
+      const record = records.find((record) => record.name === migration.name);
+      return {
+        ...migration,
+        batch: record.batch,
+        migratedAt: new Date(record.migratedAt),
+      };
+    });
   }
 
   return {
-    latest: latestRecord
-      ? {
-          id: latestRecord.id,
-          name: latestFile.name,
-          batch: latestRecord.batch,
-          migratedAt: new Date(latestRecord.migratedAt),
-          path: latestFile.path,
-          up: latest.up,
-          down: latest.down,
-        }
-      : null,
-    next: next
-      ? {
-          name: nextFile.name,
-          path: nextFile.path,
-          up: next.up,
-          down: next.down,
-        }
-      : null,
+    pending,
+    completed,
   };
 }

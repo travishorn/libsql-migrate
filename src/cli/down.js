@@ -17,18 +17,19 @@ export default async function up() {
   const config = await getConfig();
   const client = createClient(config.connection);
 
-  if (migrations.latest) {
-    await migrations.latest.down(client);
+  if (migrations.completed) {
+    const latest = migrations.completed[migrations.completed.length - 1];
+    await latest.down(client);
 
     await client.execute({
       sql: `
         DELETE FROM libsql_migrate
-        WHERE       id = :id;
+        WHERE       name = :name;
       `,
-      args: { id: migrations.latest.id },
+      args: { name: latest.name },
     });
 
-    logger.info(`Rolled back 1 migration: ${migrations.latest.name}.`);
+    logger.info(`Rolled back 1 migration: ${latest.name}.`);
   } else {
     logger.warn("Database schema is rolled back as far as possible.");
   }

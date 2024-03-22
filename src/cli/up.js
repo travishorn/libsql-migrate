@@ -16,8 +16,12 @@ export default async function up() {
   const config = await getConfig();
   const client = createClient(config.connection);
 
-  if (migrations.next) {
-    await migrations.next.up(client);
+  if (migrations.pending) {
+    const next = migrations.pending[0];
+    const latest = migrations.completed
+      ? migrations.completed[migrations.completed.length - 1]
+      : null;
+    await next.up(client);
 
     await client.execute({
       sql: `
@@ -30,12 +34,12 @@ export default async function up() {
         );
       `,
       args: {
-        name: migrations.next.name,
-        batch: migrations.latest ? migrations.latest.batch + 1 : 1,
+        name: next.name,
+        batch: latest ? latest.batch + 1 : 1,
       },
     });
 
-    logger.info(`Ran 1 migration: ${migrations.next.name}.`);
+    logger.info(`Ran 1 migration: ${next.name}.`);
   } else {
     logger.warn("Database schema is up-to-date.");
   }
