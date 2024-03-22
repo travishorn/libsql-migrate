@@ -51,7 +51,7 @@ cd my/project/root
 libsql-migrate init
 ```
 
-This writes a file called `libsqlrc.js` with the following contents. Modify it
+3. This writes a file called `libsqlrc.js` with the following contents. Modify it
 to meet your project's configuration.
 
 ```javascript
@@ -106,7 +106,7 @@ export async function up(client) {}
 export async function down(client) {}
 ```
 
-Write the code that brings your schema **up** toward the latest version in the
+3. Write the code that brings your schema **up** toward the latest version in the
 `up()` function. For example:
 
 ```javascript
@@ -117,7 +117,7 @@ export async function up(client) {
 }
 ```
 
-Write the code that reverts your schema **down** in the `down()` function:
+4. Write the code that reverts your schema **down** in the `down()` function:
 
 ```javascript
 export async function down(client) {
@@ -180,7 +180,9 @@ executed in series. This is useful to roll back all changes from a
 
 You can repeatedly run this command to roll back subsequent batches.
 
-### Make a new seed file
+### Make a new seed
+
+1. Generate a new seed file.
 
 ```sh
 libsql-migrate seed:make demo
@@ -212,7 +214,7 @@ Seed files look like this:
 export async function seed(client) {}
 ```
 
-Write the code that seeds your database with preset data in the `seed()`
+2. Write the code that seeds your database with preset data in the `seed()`
 function. Note that you'll probably want to delete old data before seeding.
 
 For example:
