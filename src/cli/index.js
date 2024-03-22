@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 import { program } from "commander";
+import { getVersion } from "../lib/index.js";
 import down from "./down.js";
 import init from "./init.js";
 import latest from "./latest.js";
@@ -9,7 +10,8 @@ import rollback from "./rollback.js";
 import seedMake from "./seedMake.js";
 import seedRun from "./seedRun.js";
 import up from "./up.js";
-import { getVersion } from "../lib/index.js";
+
+program.name("libsql-migrate");
 
 program.version(getVersion());
 
