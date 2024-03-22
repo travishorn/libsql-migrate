@@ -6,34 +6,38 @@ Database migration and seed management for libsql with configurable options.
 
 ## Installation
 
-This project will be distributed via npm when it reaches some level of
-stability. Until then, you can install it via git.
-
-1. Clone this repository.
+The easiest method is a global installation.
 
 ```sh
-git clone https://github.com/travishorn/libsql-migrate
-```
-
-2. Change into the cloned repository's directory.
-
-```sh
-cd libsql-migrate
-```
-
-3. Install dependencies.
-
-```sh
-npm install
-```
-
-4. Install the CLI globally.
-
-```sh
-npm install -g .
+npm install -g libsql-migrate
 ```
 
 The `libsql-migrate` command is now available for your usage.
+
+### Local installation
+
+Instead of installing globally, you can install locally to your project.
+
+```sh
+npm install --save-dev libsql-migrate
+```
+
+This prevents compatibility issues because it defines the version of
+`libsql-migrate` that the migrations/seeds in your repository were written for.
+
+You can either run `npx libsql-migrate <command>` and/or add migration commands
+to your `package.json`:
+
+```json
+{
+  "name": "mypackage",
+  "version": "0.1.0",
+  "scripts": {
+    "migrate": "libsql-migrate latest",
+    "seed": "libsql-migrate seed:run"
+  }
+}
+```
 
 ## Usage
 
@@ -123,7 +127,7 @@ export async function down(client) {
 }
 ```
 
-## Run the next migration
+### Run the next migration
 
 Run the next migration that has not yet been run.
 
@@ -138,7 +142,7 @@ You can repeatedly run this command to keep migrating up. If you want to run all
 pending migrations to bring the database schema fully up-to-date, use the
 [`latest`](#latest) command.
 
-## Roll back the latest migration
+### Roll back the latest migration
 
 Roll back the latest migration that was run.
 
@@ -152,7 +156,7 @@ executed.
 You can repeatedly run this command to roll back the database schema further and
 further back.
 
-## Run all pending migrations
+### Run all pending migrations
 
 Run all migrations that have not yet been run.
 
@@ -164,7 +168,7 @@ The `up()` function for all pending migration files will be executed in series.
 All migrations that were run during this command are considered part of the same
 "batch".
 
-## Roll back the latest batch
+### Roll back the latest batch
 
 Roll back all migrations that were run during the last batch.
 
@@ -178,7 +182,7 @@ executed in series. This is useful to roll back all changes from a
 
 You can repeatedly run this command to roll back subsequent batches.
 
-## Make a new seed file
+### Make a new seed file
 
 ```sh
 libsql-migrate seed:make demo
@@ -222,7 +226,7 @@ export async function seed(client) {
 }
 ```
 
-## Run all seeds
+### Run all seeds
 
 Run all seed files to fill the database with preset data.
 
@@ -233,7 +237,7 @@ libsql-migrate seed:run
 This will execute the `seed()` function inside all seed files in the seeds
 directory. Files are executed in alphabetical order.
 
-## Run specified seed(s)
+### Run specified seed(s)
 
 Include the name of a seed file to run it.
 
@@ -252,6 +256,36 @@ libsql-migrate seed:run animals cars
 
 This will run both the `animals.js` and the `cars.js` seed files. Seeds are run
 in alphabetical order no matter which order they are provided to the CLI.
+
+## Development
+
+You can clone this project via git and make changes that fit your application.
+
+1. Clone this repository.
+
+```sh
+git clone https://github.com/travishorn/libsql-migrate
+```
+
+2. Change into the cloned repository's directory.
+
+```sh
+cd libsql-migrate
+```
+
+3. Install dependencies.
+
+```sh
+npm install
+```
+
+4. (Optional) Install the CLI globally.
+
+```sh
+npm install -g .
+```
+
+The `libsql-migrate` command is now available globally for your usage.
 
 ## Contributing
 
