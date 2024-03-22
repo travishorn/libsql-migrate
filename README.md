@@ -98,7 +98,7 @@ export default {
 };
 ```
 
-Migrations files look like this:
+Migration files look like this:
 
 ```javascript
 export async function up(client) {}
@@ -106,7 +106,7 @@ export async function up(client) {}
 export async function down(client) {}
 ```
 
-3. Write the code that brings your schema **up** toward the latest version in the
+2. Write the code that brings your schema **up** toward the latest version in the
 `up()` function. For example:
 
 ```javascript
@@ -117,7 +117,7 @@ export async function up(client) {
 }
 ```
 
-4. Write the code that reverts your schema **down** in the `down()` function:
+3. Write the code that reverts your schema **down** in the `down()` function:
 
 ```javascript
 export async function down(client) {
