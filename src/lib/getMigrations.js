@@ -85,7 +85,7 @@ export default async function getMigrations() {
               batch,
               migrated_at AS migratedAt
     FROM      libsql_migrate
-    ORDER BY  migrated_at;",
+    ORDER BY  migrated_at;
   `)
   ).rows;
 
