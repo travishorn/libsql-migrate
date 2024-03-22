@@ -1,6 +1,6 @@
 {
   "name": "libsql-migrate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Database migration and seed management for libsql with configurable options.",
   "bin": {
     "libsql-migrate": "./src/cli/index.js"
