@@ -1,6 +1,6 @@
 {
   "name": "libsql-migrate",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Database migration and seed management for libsql with configurable options.",
   "bin": {
     "libsql-migrate": "./src/cli/index.js"
@@ -35,7 +35,9 @@
   },
   "homepage": "https://github.com/travishorn/libsql-migrate#readme",
   "license": "MIT",
-  "files": ["./src/**/*"],
+  "files": [
+    "./src/**/*"
+  ],
   "type": "module",
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
