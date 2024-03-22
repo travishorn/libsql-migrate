@@ -12,35 +12,31 @@ import { getConfig, getMigrations, logger } from "../lib/index.js";
  * await up();
  */
 export default async function up() {
-  try {
-    const migrations = await getMigrations();
-    const config = await getConfig();
-    const client = createClient(config.connection);
+  const migrations = await getMigrations();
+  const config = await getConfig();
+  const client = createClient(config.connection);
 
-    if (migrations.next) {
-      await migrations.next.up(client);
+  if (migrations.next) {
+    await migrations.next.up(client);
 
-      await client.execute({
-        sql: `
-          INSERT INTO libsql_migrate (
-            name,
-            batch
-          ) VALUES (
-            :name,
-            :batch
-          );
-        `,
-        args: {
-          name: migrations.next.name,
-          batch: migrations.latest?.batch ?? 1,
-        },
-      });
+    await client.execute({
+      sql: `
+        INSERT INTO libsql_migrate (
+          name,
+          batch
+        ) VALUES (
+          :name,
+          :batch
+        );
+      `,
+      args: {
+        name: migrations.next.name,
+        batch: migrations.latest ? migrations.latest.batch + 1 : 1,
+      },
+    });
 
-      logger.info(`Ran 1 migration: ${migrations.next.name}.`);
-    } else {
-      logger.warn("Database schema is up-to-date.");
-    }
-  } catch (error) {
-    logger.error(error);
+    logger.info(`Ran 1 migration: ${migrations.next.name}.`);
+  } else {
+    logger.warn("Database schema is up-to-date.");
   }
 }

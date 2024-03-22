@@ -13,27 +13,23 @@ import { getConfig, getMigrations, logger } from "../lib/index.js";
  * await down();
  */
 export default async function up() {
-  try {
-    const migrations = await getMigrations();
-    const config = await getConfig();
-    const client = createClient(config.connection);
+  const migrations = await getMigrations();
+  const config = await getConfig();
+  const client = createClient(config.connection);
 
-    if (migrations.latest) {
-      await migrations.latest.down(client);
+  if (migrations.latest) {
+    await migrations.latest.down(client);
 
-      await client.execute({
-        sql: `
-          DELETE FROM libsql_migrate
-          WHERE       id = :id;
-        `,
-        args: { id: migrations.latest.id },
-      });
+    await client.execute({
+      sql: `
+        DELETE FROM libsql_migrate
+        WHERE       id = :id;
+      `,
+      args: { id: migrations.latest.id },
+    });
 
-      logger.info(`Rolled back 1 migration: ${migrations.latest.name}.`);
-    } else {
-      logger.warn("Database schema is rolled back as far as possible.");
-    }
-  } catch (error) {
-    logger.error(error);
+    logger.info(`Rolled back 1 migration: ${migrations.latest.name}.`);
+  } else {
+    logger.warn("Database schema is rolled back as far as possible.");
   }
 }

@@ -48,11 +48,6 @@ export default {
  */
 export default async function init() {
   const filePath = "libsqlrc.js";
-
-  try {
-    await writeFileIfNotExists(filePath, configTemplate, "utf-8");
-    logger.info(`Template configuration file written to ${filePath}.`);
-  } catch (error) {
-    logger.error(error);
-  }
+  await writeFileIfNotExists(filePath, configTemplate, "utf-8");
+  logger.info(`Template configuration file written to ${filePath}.`);
 }
