@@ -41,8 +41,10 @@ export default async function rollback() {
       .map((migration) => migration.name)
       .join(", ");
 
+    const plural = migrations.latestBatch.length !== 1;
+
     logger.info(
-      `Rolled back ${migrations.latestBatch.length} migrations: ${names}`,
+      `Rolled back ${migrations.latestBatch.length} migration${plural ? "s" : ""}: ${names}.`,
     );
   } else {
     logger.info("Database schema is rolled back as far as possible.");

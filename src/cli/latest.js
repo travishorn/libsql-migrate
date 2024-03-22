@@ -44,7 +44,11 @@ export default async function latest() {
       .map((migration) => migration.name)
       .join(", ");
 
-    logger.info(`Ran ${migrations.pending.length} migrations: ${names}`);
+    const plural = migrations.pending.length !== 1;
+
+    logger.info(
+      `Ran ${migrations.pending.length} migration${plural ? "s" : ""}: ${names}.`,
+    );
   } else {
     logger.info("Database schema is up-to-date.");
   }
