@@ -3,10 +3,6 @@ import { mkdirp } from "mkdirp";
 import { join } from "node:path";
 import { getConfig, logger, timestamp } from "../lib/index.js";
 
-/**
- * The contents of a template migration file.
- * @type {string}
- */
 const migrationTemplate = `/**
 * Migrates the database schema upward, making changes to bring the schema toward the latest version.
 * @param client - The libsql client to use when migrating.

@@ -1,9 +1,5 @@
 import { writeFileIfNotExists, logger } from "../lib/index.js";
 
-/**
- * The contents of a template libsqlrc.js configuration file.
- * @type {string}
- */
 const configTemplate = `/**
 * Configuration object for libsql-migrate.
 * @typedef {Object} LibsqlMigrateConfig

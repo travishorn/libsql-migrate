@@ -3,6 +3,13 @@ import { join, parse } from "node:path";
 import { createClient } from "@libsql/client";
 import { getConfig, logger } from "./index.js";
 
+/**
+ * Retrieves information about the latest and next migrations.
+ *
+ * @async
+ * @function getMigrations
+ * @returns {Promise<{latest: Object|null, next: Object|null}>} An object containing information about the latest and next migrations.
+ */
 export default async function getMigrations() {
   const config = await getConfig();
   const client = createClient(config.connection);
