@@ -41,6 +41,6 @@ export default async function up() {
 
     logger.info(`Ran 1 migration: ${next.name}.`);
   } else {
-    logger.warn("Database schema is up-to-date.");
+    logger.info("Database schema is up-to-date.");
   }
 }

@@ -181,7 +181,6 @@ further.
 ## To do
 
 - Unit tests
-- `latest` command
 - down `batch` option
 - `seed:make` command
 - `seed:run` command

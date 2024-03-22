@@ -31,6 +31,6 @@ export default async function up() {
 
     logger.info(`Rolled back 1 migration: ${latest.name}.`);
   } else {
-    logger.warn("Database schema is rolled back as far as possible.");
+    logger.info("Database schema is rolled back as far as possible.");
   }
 }
