@@ -12,7 +12,7 @@ import { getConfig, getMigrations, logger } from "../lib/index.js";
  * @example
  * await down();
  */
-export default async function up() {
+export default async function down() {
   const migrations = await getMigrations();
   const config = await getConfig();
   const client = createClient(config.connection);
