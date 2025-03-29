@@ -1,10 +1,20 @@
 import { join } from "node:path";
 import { merge } from "lodash-es";
 
+let configPath = join(process.cwd(), "libsqlrc.js");
+
 const defaultConfig = {
   migrations: { directory: "./migrations" },
   seeds: { directory: "./seeds" },
 };
+
+export function setConfigPath(path) {
+  configPath = join(process.cwd(), path);
+}
+
+export function getConfigPath() {
+  return configPath;
+}
 
 /**
  * Retrieves the configuration settings based on the current environment. Reads
@@ -18,9 +28,9 @@ const defaultConfig = {
  */
 export default async function getConfig() {
   const environment = process.env.NODE_ENV ?? "development";
-  const definedConfig = (
-    await import(join("file:///", process.cwd(), "libsqlrc.js"))
-  ).default[environment];
+  const definedConfig = (await import(join("file:///", configPath))).default[
+    environment
+  ];
 
   return merge(defaultConfig, definedConfig);
 }

@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import { program } from "commander";
-import { getVersion } from "../lib/index.js";
+import { getVersion, handleOptions } from "../lib/index.js";
 import down from "./down.js";
 import init from "./init.js";
 import latest from "./latest.js";
@@ -55,4 +55,7 @@ program
   .description("Run the next migration that has not yet been run.")
   .action(up);
 
-program.parse();
+program
+  .option("-c --config <path>", "path to config-file", "./libsqlrc.js")
+  .hook("preAction", handleOptions)
+  .parse();

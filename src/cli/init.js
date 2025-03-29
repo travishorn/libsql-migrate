@@ -1,4 +1,5 @@
 import { writeFileIfNotExists, logger } from "../lib/index.js";
+import { getConfigPath } from "../lib/getConfig.js";
 
 const configTemplate = `/**
 * Configuration object for libsql-migrate.
@@ -41,7 +42,7 @@ export default {
  * await init();
  */
 export default async function init() {
-  const filePath = "libsqlrc.js";
+  const filePath = getConfigPath();
   await writeFileIfNotExists(filePath, configTemplate, "utf-8");
   logger.info(`Template configuration file written to ${filePath}.`);
 }
