@@ -19,7 +19,25 @@ export default async function down() {
 
   if (migrations.completed) {
     const latest = migrations.completed[migrations.completed.length - 1];
-    await latest.down(client);
+
+    if (typeof config.hooks?.beforeMigration === 'function') {
+      await config.hooks.beforeMigration('down', latest.name);
+    }
+
+    let result;
+    try {
+      result = await latest.down(client);
+    }
+    catch (err) {
+      if (typeof config.hooks?.onError === 'function') {
+        config.hooks.onError('down', latest.name, err);
+      }
+      throw err;
+    }
+
+    if (typeof config.hooks?.afterMigration === 'function') {
+      await config.hooks.afterMigration('down', latest.name, result);
+    }
 
     await client.execute({
       sql: `
