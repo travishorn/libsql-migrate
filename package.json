@@ -26,6 +26,9 @@
     "tursodb"
   ],
   "author": "Travis Horn <travis@travishorn.com> (https://travishorn.com/)",
+  "contributors": [
+    "mkrenzke <krenzke@unipoin.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/travishorn/libsql-migrate.git"
