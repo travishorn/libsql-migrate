@@ -70,6 +70,22 @@ export default {
 };
 ```
 
+### Options
+
+#### Custom Config Path (`-c`, `--config`)
+
+`libsql-migrate` uses a configuration file named `libsqlrc.js` by default, which should export the necessary database connection and migration settings.
+
+You can specify a custom path to your configuration file using the `--config` (or short `-c`) option. This is useful if the config file is located outside the project root or when you want to manage multiple environments.
+
+**Example:**
+
+```bash
+libsql-migrate up --config ../configs/libsqlrc.js
+```
+
+This tells `libsql-migrate` to load configuration from the specified file instead of looking for `libsqlrc.js` in the current working directory. If used with command `init` it will write the default config file to the given location.
+
 ### Make a new migration
 
 1. Make a new migration named `demo`.
