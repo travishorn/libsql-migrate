@@ -21,7 +21,25 @@ export default async function up() {
     const latest = migrations.completed
       ? migrations.completed[migrations.completed.length - 1]
       : null;
-    await next.up(client);
+
+    if (typeof config.hooks?.beforeMigration === 'function') {
+      await config.hooks.beforeMigration('up', next.name);
+    }
+
+    let result;
+    try {
+      result = await next.up(client);
+    }
+    catch (err) {
+      if (typeof config.hooks?.onError === 'function') {
+        config.hooks.onError('up', next.name, err);
+      }
+      throw err;
+    }
+
+    if (typeof config.hooks?.afterMigration === 'function') {
+      await config.hooks.afterMigration('up', next.name, result);
+    }
 
     await client.execute({
       sql: `

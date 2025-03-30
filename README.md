@@ -141,6 +141,91 @@ export async function down(client) {
 }
 ```
 
+---
+
+## Hooks
+
+You can define optional lifecycle hooks to run custom logic before, after, or when an error occurs during a migration. These hooks are defined in the `libsqlrc.js` file.
+
+### Available Hooks and Parameters
+
+| Hook Name                                  | Called When                                                                 |
+|--------------------------------------------|------------------------------------------------------------------------------|
+| `beforeMigration(action, name)`            | Before each migration is executed                                           |
+| `afterMigration(action, name, result)`     | After each migration is successfully executed                               |
+| `afterMigrations(action, names, results)`  | **Only** called after all migrations when using the `latest` command        |
+| `onError(action, name, error)`             | When a migration fails                                                      |
+
+### Hook Parameters
+
+#### `action` (`"up"` \| `"down"`)
+Indicates the direction of the migration:
+
+- `"up"`: applying a migration
+- `"down"`: rolling back a migration
+
+#### `name` (string)
+The full name of the migration file, including the timestamp prefix.  
+This is the name that has been generated using the `make` command, for example:
+
+```
+20240327102435_add-users-table
+```
+
+#### `result` (any | undefined)
+The result of the executed migration. This is the value returned by the migration function, if any.  
+If the function does not return a value, `result` will be `undefined`.
+
+#### `names` (string[])
+An array of all processed migration names (only used in `afterMigrations`).
+
+#### `results` (any[] | undefined[])
+An array of results returned by each migration (only used in `afterMigrations`).  
+If a migration does not return a value, the corresponding entry will be `undefined`.
+
+#### `error` (Error)
+The error object thrown during a failed migration.
+
+### Example
+
+```js
+// libsqlrc.js
+
+export default {
+   development: {
+     connection: {
+       url: "file:local.db"
+     },
+     migrations: {
+       directory: "my_migrations_directory"
+     },
+     hooks: {
+       beforeMigration: (action, name) => {
+         console.log(`[${action}] Starting migration: ${name}`);
+       },
+       afterMigration: (action, name, result) => {
+         console.log(`[${action}] Finished migration: ${name}`, result);
+       },
+       afterMigrations: (action, names, results) => {
+         console.log(`[${action}] All migrations completed via "latest":`);
+         names.forEach((name, i) => {
+           console.log(` - ${name}`, results[i]);
+         });
+       },
+       onError: (action, name, error) => {
+         console.error(`[${action}] Migration failed: ${name}`, error);
+       }
+     }
+   }
+  // ...
+};
+```
+
+> **Note:** All hooks are optional. If a hook is not defined, it will be skipped silently.
+
+---
+
+
 ### Run the next migration
 
 Run the next migration that has not yet been run.
