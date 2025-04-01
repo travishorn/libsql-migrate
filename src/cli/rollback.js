@@ -22,7 +22,7 @@ export default async function rollback() {
 
     migrations.latestBatch = migrations.completed.filter(
       (migration) => migration.batch === batch,
-    );
+    ).reverse();
 
     const results = [];
     for (const migration of migrations.latestBatch) {
