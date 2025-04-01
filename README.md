@@ -149,12 +149,12 @@ You can define optional lifecycle hooks to run custom logic before, after, or wh
 
 ### Available Hooks and Parameters
 
-| Hook Name                                 | Called When                                                           |
-| ----------------------------------------- |-----------------------------------------------------------------------|
-| `beforeMigration(action, name)`           | Before each migration is executed                                     |
-| `afterMigration(action, name, result)`    | After each migration is successfully executed                         |
+| Hook Name                                 | Called When                                                            |
+| ----------------------------------------- | ---------------------------------------------------------------------- |
+| `beforeMigration(action, name)`           | Before each migration is executed                                      |
+| `afterMigration(action, name, result)`    | After each migration is successfully executed                          |
 | `afterMigrations(action, names, results)` | Called after all migrations when using commands `latest` or `rollback` |
-| `onError(action, name, error)`            | When a migration fails                                                |
+| `onError(action, name, error)`            | When a migration fails                                                 |
 
 ### Hook Parameters
 
