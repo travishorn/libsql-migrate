@@ -157,17 +157,19 @@ You can define optional lifecycle hooks to run custom logic before, after, or wh
 | `beforeSeed(name)`                        | Before each seed is executed                                           |
 | `afterSeed(name, result)`                 | After each seed is successfully executed                               |
 | `afterSeeds(names, results)`              | Called after all seeds are successfully executed                       |
-| `onError(action, name, error)`            | When a migration/seed fails                                            |
+| `onError(action, name, error)`            | When a migration/seed/make fails                                       |
 
 ### Hook Parameters
 
-#### `action` (`"up"` \| `"down"` \| `"seed"` \| `"make"`)
+#### `action` (`"up"` \| `"down"` \| `"seed"` \| `"make"` \| `"seed:make"`)
 
 Indicates whether it is a seed-run or the direction of a migration:
 
 - `"up"`: applying a migration
 - `"down"`: rolling back a migration
 - `"seed"`: running a seed
+- `"make"`: error when "making" migration file
+- `"seed:make"`: error when "making" seed file
 
 #### `name` (string)
 
