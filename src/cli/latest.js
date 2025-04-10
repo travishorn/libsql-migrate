@@ -33,7 +33,7 @@ export default async function latest() {
         results.push(result);
       } catch (err) {
         if (typeof config.hooks?.onError === "function") {
-          config.hooks.onError("up", migration.name, err);
+          await config.hooks.onError("up", migration.name, err);
         }
         throw err;
       }

@@ -159,6 +159,8 @@ You can define optional lifecycle hooks to run custom logic before, after, or wh
 | `afterSeeds(names, results)`              | Called after all seeds are successfully executed                       |
 | `onError(action, name, error)`            | When a migration/seed/make fails                                       |
 
+> **Note:** All hooks may be async functions. If a function returns a Promise it will be awaited.
+
 ### Hook Parameters
 
 #### `action` (`"up"` \| `"down"` \| `"seed"` \| `"make"` \| `"seed:make"`)

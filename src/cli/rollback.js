@@ -36,7 +36,7 @@ export default async function rollback() {
         results.push(result);
       } catch (err) {
         if (typeof config.hooks?.onError === "function") {
-          config.hooks.onError("down", migration.name, err);
+          await config.hooks.onError("down", migration.name, err);
         }
         throw err;
       }

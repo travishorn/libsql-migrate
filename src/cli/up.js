@@ -31,7 +31,7 @@ export default async function up() {
       result = await next.up(client);
     } catch (err) {
       if (typeof config.hooks?.onError === "function") {
-        config.hooks.onError("up", next.name, err);
+        await config.hooks.onError("up", next.name, err);
       }
       throw err;
     }

@@ -37,7 +37,7 @@ export default async function seedRun(names) {
         results.push(result);
       } catch (err) {
         if (typeof config.hooks?.onError === "function") {
-          config.hooks.onError("seed", seed.name, err);
+          await config.hooks.onError("seed", seed.name, err);
         }
         throw err;
       }

@@ -45,7 +45,7 @@ export default async function make(name) {
     await writeFile(join(directory, filename), migrationTemplate, "utf-8");
   } catch (err) {
     if (typeof config.hooks?.onError === "function") {
-      config.hooks.onError("make", name, err);
+      await config.hooks.onError("make", name, err);
     }
     throw err;
   }
