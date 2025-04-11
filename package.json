@@ -8,7 +8,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier . --write",
-    "lint:eslint": "eslint **/*[.cjs,.js] --ignore-path=.gitignore",
+    "lint:eslint": "eslint **/*[.cjs,.js] --ignore-path=.gitignore --no-error-on-unmatched-pattern",
     "lint:prettier": "prettier . --check",
     "lint": "npm run lint:eslint && npm run lint:prettier"
   },
