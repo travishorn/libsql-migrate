@@ -20,9 +20,9 @@ export default async function rollback() {
   if (migrations.completed) {
     const batch = migrations.completed[migrations.completed.length - 1].batch;
 
-    migrations.latestBatch = migrations.completed.filter(
-      (migration) => migration.batch === batch,
-    );
+    migrations.latestBatch = migrations.completed
+      .filter((migration) => migration.batch === batch)
+      .reverse();
 
     const results = [];
     for (const migration of migrations.latestBatch) {
@@ -56,7 +56,7 @@ export default async function rollback() {
       });
     }
 
-    const names = migrations.latestBatch.map((migration) => migration.name)
+    const names = migrations.latestBatch.map((migration) => migration.name);
     const plural = migrations.latestBatch.length !== 1;
 
     if (typeof config.hooks?.afterMigrations === "function") {
