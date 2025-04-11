@@ -31,7 +31,11 @@ export default async function seedMake(name) {
 
   try {
     await mkdirp(directory);
-    await writeFileIfNotExists(join(directory, filename), seedTemplate, "utf-8");
+    await writeFileIfNotExists(
+      join(directory, filename),
+      seedTemplate,
+      "utf-8",
+    );
   } catch (err) {
     if (typeof config.hooks?.onError === "function") {
       await config.hooks.onError("seed:make", name, err);

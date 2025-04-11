@@ -54,7 +54,9 @@ export default async function seedRun(names) {
       await config.hooks.afterSeeds(names, results);
     }
 
-    logger.info(`Ran ${seeds.length} seed${plural ? "s" : ""}: ${names.join(", ")}.`);
+    logger.info(
+      `Ran ${seeds.length} seed${plural ? "s" : ""}: ${names.join(", ")}.`,
+    );
   } else {
     const plural = names.length !== 1;
     logger.warn(
