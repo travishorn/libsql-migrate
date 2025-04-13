@@ -25,14 +25,38 @@ export default async function seedRun(names) {
   seeds = seeds.sort();
 
   if (seeds.length > 0) {
+    const results = [];
     for (const seed of seeds) {
-      await seed.run(client);
+      if (typeof config.hooks?.beforeSeed === "function") {
+        await config.hooks.beforeSeed(seed.name);
+      }
+
+      let result;
+      try {
+        result = await seed.run(client);
+        results.push(result);
+      } catch (err) {
+        if (typeof config.hooks?.onError === "function") {
+          await config.hooks.onError("seed", seed.name, err);
+        }
+        throw err;
+      }
+
+      if (typeof config.hooks?.afterSeed === "function") {
+        await config.hooks.afterSeed(seed.name, result);
+      }
     }
 
-    const names = seeds.map((seed) => seed.name).join(", ");
+    const names = seeds.map((seed) => seed.name);
     const plural = seeds.length !== 1;
 
-    logger.info(`Ran ${seeds.length} seed${plural ? "s" : ""}: ${names}.`);
+    if (typeof config.hooks?.afterSeeds === "function") {
+      await config.hooks.afterSeeds(names, results);
+    }
+
+    logger.info(
+      `Ran ${seeds.length} seed${plural ? "s" : ""}: ${names.join(", ")}.`,
+    );
   } else {
     const plural = names.length !== 1;
     logger.warn(

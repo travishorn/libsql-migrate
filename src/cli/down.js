@@ -29,7 +29,7 @@ export default async function down() {
       result = await latest.down(client);
     } catch (err) {
       if (typeof config.hooks?.onError === "function") {
-        config.hooks.onError("down", latest.name, err);
+        await config.hooks.onError("down", latest.name, err);
       }
       throw err;
     }

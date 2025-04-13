@@ -145,7 +145,7 @@ export async function down(client) {
 
 ## Hooks
 
-You can define optional lifecycle hooks to run custom logic before, after, or when an error occurs during a migration. These hooks are defined in the `libsqlrc.js` file.
+You can define optional lifecycle hooks to run custom logic before, after, or when an error occurs during a migration/seed. These hooks are defined in the `libsqlrc.js` file.
 
 ### Available Hooks and Parameters
 
@@ -154,20 +154,28 @@ You can define optional lifecycle hooks to run custom logic before, after, or wh
 | `beforeMigration(action, name)`           | Before each migration is executed                                      |
 | `afterMigration(action, name, result)`    | After each migration is successfully executed                          |
 | `afterMigrations(action, names, results)` | Called after all migrations when using commands `latest` or `rollback` |
-| `onError(action, name, error)`            | When a migration fails                                                 |
+| `beforeSeed(name)`                        | Before each seed is executed                                           |
+| `afterSeed(name, result)`                 | After each seed is successfully executed                               |
+| `afterSeeds(names, results)`              | Called after all seeds are successfully executed                       |
+| `onError(action, name, error)`            | When a migration/seed/make fails                                       |
+
+> **Note:** All hooks may be async functions. If a function returns a Promise it will be awaited.
 
 ### Hook Parameters
 
-#### `action` (`"up"` \| `"down"`)
+#### `action` (`"up"` \| `"down"` \| `"seed"` \| `"make"` \| `"seed:make"`)
 
-Indicates the direction of the migration:
+Indicates whether it is a seed-run or the direction of a migration:
 
 - `"up"`: applying a migration
 - `"down"`: rolling back a migration
+- `"seed"`: running a seed
+- `"make"`: error when "making" migration file
+- `"seed:make"`: error when "making" seed file
 
 #### `name` (string)
 
-The full name of the migration file, including the timestamp prefix.  
+The full name of the migration/seed file, including the timestamp prefix.  
 This is the name that has been generated using the `make` command, for example:
 
 ```
@@ -176,17 +184,17 @@ This is the name that has been generated using the `make` command, for example:
 
 #### `result` (any | undefined)
 
-The result of the executed migration. This is the value returned by the migration function, if any.  
+The result of the executed migration or seed. This is the value returned by the function, if any.  
 If the function does not return a value, `result` will be `undefined`.
 
 #### `names` (string[])
 
-An array of all processed migration names (only used in `afterMigrations`).
+An array of all processed file names (only used in `afterMigrations` and `afterSeeds`).
 
 #### `results` (any[] | undefined[])
 
-An array of results returned by each migration (only used in `afterMigrations`).  
-If a migration does not return a value, the corresponding entry will be `undefined`.
+An array of results returned by each migration/seed (only used in `afterMigrations` and `afterSeeds`).  
+If a function does not return a value, the corresponding entry will be `undefined`.
 
 #### `error` (Error)
 

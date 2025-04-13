@@ -39,8 +39,17 @@ export default async function make(name) {
   const config = await getConfig();
   const directory = join(process.cwd(), config.migrations.directory);
   const filename = `${timestamp()}_${name}.js`;
-  await mkdirp(directory);
-  await writeFile(join(directory, filename), migrationTemplate, "utf-8");
+
+  try {
+    await mkdirp(directory);
+    await writeFile(join(directory, filename), migrationTemplate, "utf-8");
+  } catch (err) {
+    if (typeof config.hooks?.onError === "function") {
+      await config.hooks.onError("make", name, err);
+    }
+    throw err;
+  }
+
   logger.info(
     `New migration created at ${config.migrations.directory}/${filename}.`,
   );
