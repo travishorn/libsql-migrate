@@ -9,10 +9,28 @@ const defaultConfig = {
   seeds: { directory: "./seeds" },
 };
 
+/**
+ * Sets the path to the configuration file. This allows customizing where the
+ * configuration file is located relative to the current working directory.
+ *
+ * @function setConfigPath
+ * @param {string} path - The path to the configuration file.
+ * @example
+ * // Set config path to a custom location
+ * setConfigPath("config/database.js");
+ */
 export function setConfigPath(path) {
   configPath = join(process.cwd(), path);
 }
 
+/**
+ * Gets the current path to the configuration file.
+ *
+ * @function getConfigPath
+ * @returns {string} The absolute path to the configuration file.
+ * @example
+ * const configPath = getConfigPath(); // Returns "/path/to/libsqlrc.js"
+ */
 export function getConfigPath() {
   return configPath;
 }

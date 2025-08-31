@@ -6,6 +6,7 @@ import { getConfig, getSeeds, logger } from "../lib/index.js";
  *
  * @async
  * @function seedRun
+ * @param {string[]} [names] - Array of seed names to run. If empty or not provided, runs all seeds.
  * @returns {Promise<void>} A promise that resolves when seed file(s) have been run.
  * @example
  * await seedRun(); // Runs all seeds
