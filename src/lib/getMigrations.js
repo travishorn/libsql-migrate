@@ -1,5 +1,6 @@
 import { readdir } from "fs/promises";
 import { join, parse } from "node:path";
+import { pathToFileURL } from "node:url";
 import { createClient } from "@libsql/client";
 import { getConfig, logger } from "./index.js";
 
@@ -60,7 +61,7 @@ export default async function getMigrations() {
   // Add the up and down functions to each object
   const migrations = await Promise.all(
     files.map(async (file) => {
-      const migration = await import(join("file:///", file.path));
+      const migration = await import(pathToFileURL(file.path));
 
       return {
         ...file,

@@ -1,5 +1,6 @@
 import { readdir } from "fs/promises";
 import { join, parse } from "node:path";
+import { pathToFileURL } from "node:url";
 import { getConfig, logger } from "./index.js";
 
 /**
@@ -53,7 +54,7 @@ export default async function getSeeds() {
   // Add the run function to each object
   return await Promise.all(
     files.map(async (file) => {
-      const seed = await import(join("file:///", file.path));
+      const seed = await import(pathToFileURL(file.path));
 
       return {
         ...file,

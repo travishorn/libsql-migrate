@@ -1,4 +1,5 @@
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { merge } from "lodash-es";
 
 let configPath = join(process.cwd(), "libsqlrc.js");
@@ -28,7 +29,7 @@ export function getConfigPath() {
  */
 export default async function getConfig() {
   const environment = process.env.NODE_ENV ?? "development";
-  const definedConfig = (await import(join("file:///", configPath))).default[
+  const definedConfig = (await import(pathToFileURL(configPath))).default[
     environment
   ];
 
