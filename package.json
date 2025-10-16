@@ -3,7 +3,7 @@
   "version": "1.3.3",
   "description": "Database migration and seed management for libsql with configurable options.",
   "bin": {
-    "libsql-migrate": "./src/cli/index.js"
+    "libsql-migrate": "src/cli/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
