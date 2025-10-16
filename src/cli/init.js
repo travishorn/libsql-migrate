@@ -2,19 +2,16 @@ import { writeFileIfNotExists, logger } from "../lib/index.js";
 import { getConfigPath } from "../lib/getConfig.js";
 
 const configTemplate = `/**
-* Configuration object for libsql-migrate.
-* @typedef {Object.<string, {
-*   connection: {
-*     url: string,
-*     authToken?: string
-*   }
-* }>} LibsqlMigrateConfig
-*/
+ * Configuration object for libsql-migrate.
+ * @typedef {Object.<string, {
+ *   connection: import('@libsql/client').Config
+ * }>} LibsqlMigrateConfig
+ */
 
 /**
-* Configuration object for libsql-migrate.
-* @type {LibsqlMigrateConfig}
-*/
+ * Configuration object for libsql-migrate.
+ * @type {LibsqlMigrateConfig}
+ */
 export default {
   development: {
     connection: {
