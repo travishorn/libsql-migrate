@@ -114,7 +114,7 @@ describe("getConfig", () => {
   it("setConfigPath updates the config path", async () => {
     const { setConfigPath, getConfigPath } = await loadModule();
     setConfigPath("custom/libsqlrc.js");
-    expect(getConfigPath()).toContain("custom/libsqlrc.js");
+    expect(getConfigPath().replace(/\\/g, "/")).toContain("custom/libsqlrc.js");
   });
 
   it("getConfigPath returns the current config path", async () => {

@@ -403,8 +403,11 @@ The `libsql-migrate` command is now available globally for your usage.
 
 ## Contributing
 
-Contributions are welcome. Kindly run `npm run format` and `npm run lint` before
-committing code and submitting a pull request.
+Contributions are welcome. Kindly run `npm test`, `npm run format`, and `npm run
+lint` before committing code and submitting a pull request. Please ensure all
+tests pass before submitting.
+
+If you introduce new features, please add tests for them.
 
 ## License
 
