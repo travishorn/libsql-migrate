@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-const { mockExecute, mockCreateClient } = vi.hoisted(() => {
+const { mockCreateClient } = vi.hoisted(() => {
   const mockExecute = vi.fn().mockResolvedValue({ rows: [] });
   const mockCreateClient = vi.fn(() => ({ execute: mockExecute }));
   return { mockExecute, mockCreateClient };
