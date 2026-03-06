@@ -1,5 +1,4 @@
-import { createClient } from "@libsql/client";
-import { getConfig, getMigrations, logger } from "../lib/index.js";
+import { createClient, getConfig, getMigrations, logger } from "../lib/index.js";
 
 /**
  * Finds and runs the next migration that has not yet been run by checking the

@@ -1,8 +1,7 @@
 import { readdir } from "fs/promises";
 import { join, parse } from "node:path";
 import { pathToFileURL } from "node:url";
-import { createClient } from "@libsql/client";
-import { getConfig, logger } from "./index.js";
+import { createClient, getConfig, logger } from "./index.js";
 
 /**
  * Represents a database migration.

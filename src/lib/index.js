@@ -1,3 +1,4 @@
+export { default as createClient } from "./createClient.js";
 export { default as getConfig } from "./getConfig.js";
 export { default as getMigrations } from "./getMigrations.js";
 export { default as getSeeds } from "./getSeeds.js";

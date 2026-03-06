@@ -1,5 +1,4 @@
-import { createClient } from "@libsql/client";
-import { getConfig, getSeeds, logger } from "../lib/index.js";
+import { createClient, getConfig, getSeeds, logger } from "../lib/index.js";
 
 /**
  * Runs specified or all seed file(s).
