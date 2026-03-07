@@ -76,7 +76,7 @@ describe("up", () => {
       return sql.includes("INSERT INTO libsql_migrate");
     });
     expect(insertCall).toBeDefined();
-    expect(insertCall[0].args.batch).toBe(1);
+    expect(insertCall[0].args[1]).toBe(1);
   });
 
   it("uses batch number incremented from the last completed migration", async () => {
@@ -94,7 +94,7 @@ describe("up", () => {
       const sql = typeof arg === "string" ? arg : arg?.sql ?? "";
       return sql.includes("INSERT INTO libsql_migrate");
     });
-    expect(insertCall[0].args.batch).toBe(3);
+    expect(insertCall[0].args[1]).toBe(3);
   });
 
   it("logs the migration name after running", async () => {

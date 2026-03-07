@@ -76,8 +76,8 @@ describe("latest", () => {
       return sql.includes("INSERT INTO libsql_migrate");
     });
     expect(insertCalls).toHaveLength(2);
-    expect(insertCalls[0][0].args.batch).toBe(1);
-    expect(insertCalls[1][0].args.batch).toBe(1);
+    expect(insertCalls[0][0].args[1]).toBe(1);
+    expect(insertCalls[1][0].args[1]).toBe(1);
   });
 
   it("uses batch number incremented from last completed migration", async () => {
@@ -95,7 +95,7 @@ describe("latest", () => {
       const sql = typeof arg === "string" ? arg : arg?.sql ?? "";
       return sql.includes("INSERT INTO libsql_migrate");
     });
-    expect(insertCall[0].args.batch).toBe(4);
+    expect(insertCall[0].args[1]).toBe(4);
   });
 
   it("logs count and names of all migrations run", async () => {
