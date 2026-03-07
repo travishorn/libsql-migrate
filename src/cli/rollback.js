@@ -48,11 +48,9 @@ export default async function rollback() {
       await client.execute({
         sql: `
           DELETE FROM libsql_migrate
-          WHERE       name = :name;
+          WHERE       name = ?;
         `,
-        args: {
-          name: migration.name,
-        },
+        args: [migration.name],
       });
     }
 

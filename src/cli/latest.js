@@ -48,14 +48,11 @@ export default async function latest() {
             name,
             batch
           ) VALUES (
-            :name,
-            :batch
+            ?,
+            ?
           );
         `,
-        args: {
-          name: migration.name,
-          batch,
-        },
+        args: [migration.name, batch],
       });
     }
 

@@ -46,14 +46,11 @@ export default async function up() {
           name,
           batch
         ) VALUES (
-          :name,
-          :batch
+          ?,
+          ?
         );
       `,
-      args: {
-        name: next.name,
-        batch: latest ? latest.batch + 1 : 1,
-      },
+      args: [next.name, latest ? latest.batch + 1 : 1],
     });
 
     logger.info(`Ran 1 migration: ${next.name}.`);

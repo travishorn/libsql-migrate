@@ -76,7 +76,7 @@ describe("down", () => {
       return sql.includes("DELETE FROM libsql_migrate");
     });
     expect(deleteCall).toBeDefined();
-    expect(deleteCall[0].args.name).toBe("20240101000000_create_users");
+    expect(deleteCall[0].args[0]).toBe("20240101000000_create_users");
   });
 
   it("logs the rolled back migration name", async () => {
