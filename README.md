@@ -122,6 +122,11 @@ export async function up(client) {}
 export async function down(client) {}
 ```
 
+A migration file is only imported when its `up()` or `down()` is about to run.
+Migrations that are already applied are not loaded by `up` and `latest`, so a
+dependency that only an old migration needs can be removed once that migration
+has been applied everywhere.
+
 2. Write the code that brings your schema **up** toward the latest version in the
    `up()` function. For example:
 
@@ -198,7 +203,8 @@ If a function does not return a value, the corresponding entry will be `undefine
 
 #### `error` (Error)
 
-The error object thrown during a failed migration.
+The error object thrown during a failed migration or seed. An error thrown while
+importing the migration or seed file is reported the same way.
 
 ### Example
 
@@ -370,6 +376,8 @@ libsql-migrate seed:run animals cars
 
 This will run both the `animals.js` and the `cars.js` seed files. Seeds are run
 in alphabetical order no matter which order they are provided to the CLI.
+
+Only the seed files that are about to run are imported.
 
 ## Development
 

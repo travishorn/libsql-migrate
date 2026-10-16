@@ -58,18 +58,17 @@ export default async function getMigrations() {
     return;
   }
 
-  // Add the up and down functions to each object
-  const migrations = await Promise.all(
-    files.map(async (file) => {
-      const migration = await import(pathToFileURL(file.path));
+  // Import each migration file lazily, when its up() or down() is about to
+  // run, so that migrations which do not run are never loaded.
+  const migrations = files.map((file) => {
+    const url = pathToFileURL(file.path);
 
-      return {
-        ...file,
-        up: migration.up,
-        down: migration.down,
-      };
-    }),
-  );
+    return {
+      ...file,
+      up: async (client) => (await import(url)).up(client),
+      down: async (client) => (await import(url)).down(client),
+    };
+  });
 
   // Get migration records
   await client.execute(`

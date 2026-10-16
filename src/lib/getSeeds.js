@@ -9,7 +9,7 @@ import { getConfig, logger } from "./index.js";
  * @typedef {Object} Seed
  * @property {string} name - The name of the migration (from the filename)
  * @property {string} path - The path to the migration file.
- * @property {Function} run - The function to execute the seed.
+ * @property {Function} run - The function to execute the seed. Imports the seed file on first call.
  */
 
 /**
@@ -51,15 +51,14 @@ export default async function getSeeds() {
     return;
   }
 
-  // Add the run function to each object
-  return await Promise.all(
-    files.map(async (file) => {
-      const seed = await import(pathToFileURL(file.path));
+  // Import each seed file lazily, when its seed() is about to run, so that
+  // seeds which do not run are never loaded.
+  return files.map((file) => {
+    const url = pathToFileURL(file.path);
 
-      return {
-        ...file,
-        run: seed.seed,
-      };
-    }),
-  );
+    return {
+      ...file,
+      run: async (client) => (await import(url)).seed(client),
+    };
+  });
 }
