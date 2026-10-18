@@ -85,6 +85,21 @@ describe("getSeeds", () => {
     const result = await getSeeds();
 
     expect(typeof result[0].run).toBe("function");
+    await expect(result[0].run({})).resolves.toBe("seeded");
+  });
+
+  it("does not import seed files until run() is called", async () => {
+    await mkdir(seedsDir, { recursive: true });
+    await writeFile(
+      join(seedsDir, "broken.js"),
+      `throw new Error("imported");`,
+      "utf-8",
+    );
+
+    const result = await getSeeds();
+
+    expect(result).toHaveLength(1);
+    await expect(result[0].run({})).rejects.toThrow("imported");
   });
 
   it("returns seeds sorted alphabetically by filename", async () => {

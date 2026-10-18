@@ -185,6 +185,28 @@ describe("getMigrations", () => {
 
     expect(typeof result.pending[0].up).toBe("function");
     expect(typeof result.pending[0].down).toBe("function");
+    await expect(result.pending[0].up({})).resolves.toBe("up-result");
+    await expect(result.pending[0].down({})).resolves.toBe("down-result");
+  });
+
+  it("does not import migration files until up() or down() is called", async () => {
+    await mkdir(migrationsDir, { recursive: true });
+    await writeFile(
+      join(migrationsDir, "20240101000000_broken.js"),
+      `throw new Error("imported");`,
+      "utf-8",
+    );
+
+    getConfig.mockResolvedValue({
+      connection: { url: "file:test.db" },
+      migrations: { directory: relMigrationsDir },
+      seeds: { directory: "./seeds" },
+    });
+
+    const result = await getMigrations();
+
+    expect(result.pending).toHaveLength(1);
+    await expect(result.pending[0].up({})).rejects.toThrow("imported");
   });
 
   it("sorts migration files alphabetically by filename", async () => {
